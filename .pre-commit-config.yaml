@@ -20,7 +20,7 @@ repos:
     hooks:
       - id: prettier
         name: prettier (local)
-        entry: npx prettier --write .
+        entry: npx prettier --write
         language: system
         types: [javascript, jsx, json, css, scss, html, ts, tsx]
         files: ^frontend/
