@@ -15,3 +15,18 @@ repos:
     rev: 6.0.1
     hooks:
     -   id: isort
+
+-   repo: local
+    hooks:
+    -   id: prettier
+        name: prettier (local)
+        entry: npx prettier --write
+        language: system
+        types: [javascript, jsx, json, css, scss, html, ts, tsx]
+        files: ^frontend/
+
+-   repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.44.0
+    hooks:
+    -   id: eslint
+        files: ^frontend/.*\.(js|jsx)$
