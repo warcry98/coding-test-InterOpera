@@ -7,7 +7,7 @@ export default function Home() {
   const [answer, setAnswer] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/data")
+    fetch("http://localhost:8000/api/v1/data")
       .then((res) => res.json())
       .then((data) => {
         setUsers(data.users || []);
@@ -21,7 +21,7 @@ export default function Home() {
 
   const handleAskQuestion = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/ai", {
+      const response = await fetch("http://localhost:8000/api/v1/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question }),
@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Next.js + FastAPI Sample</h1>
+      <h1 className="font-black">Next.js + FastAPI Sample</h1>
 
       <section style={{ marginBottom: "2rem" }}>
         <h2>Dummy Data</h2>
