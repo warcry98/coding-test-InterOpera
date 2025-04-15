@@ -1,32 +1,32 @@
 files: ^backend/
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
--   repo: https://github.com/psf/black-pre-commit-mirror
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+  - repo: https://github.com/psf/black-pre-commit-mirror
     rev: 25.1.0
     hooks:
-    -   id: black
+      - id: black
         args: ["--line-length=120"]
--   repo: https://github.com/pycqa/isort
+  - repo: https://github.com/pycqa/isort
     rev: 6.0.1
     hooks:
-    -   id: isort
+      - id: isort
 
--   repo: local
+  - repo: local
     hooks:
-    -   id: prettier
+      - id: prettier
         name: prettier (local)
-        entry: npx prettier --write
+        entry: npx prettier --write .
         language: system
         types: [javascript, jsx, json, css, scss, html, ts, tsx]
         files: ^frontend/
 
--   repo: https://github.com/pre-commit/mirrors-eslint
+  - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v8.44.0
     hooks:
-    -   id: eslint
+      - id: eslint
         files: ^frontend/.*\.(js|jsx)$

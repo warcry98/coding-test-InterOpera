@@ -3,29 +3,30 @@ import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
-  const [ mount, setMount ] = useState(false)
-  const { systemTheme, theme, setTheme } = useTheme()
-  const currentTheme = theme === "system" ? systemTheme : theme
+  const [mount, setMount] = useState(false);
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
   useEffect(() => {
-    setMount(true)
-  }, [])
-  console.log(currentTheme)
+    setMount(true);
+  }, []);
+  console.log(currentTheme);
 
   return mount ? (
     <button
-        onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
-        type="button"
-        className="flex h-10 w-10 p-2 items-center justify-center rounded-md border-gray-800 text-gray-800 focus:outline-none focus:ring-0 focus:ring-gray-200 dark:border-slate-300 dark:text-white"
-      >
-        { theme === "dark" ? 
-          <svg
+      onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+      type="button"
+      className="flex h-10 w-10 p-2 items-center justify-center rounded-md border-gray-800 text-gray-800 focus:outline-none focus:ring-0 focus:ring-gray-200 dark:border-slate-300 dark:text-white"
+    >
+      {theme === "dark" ? (
+        <svg
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-          </svg> :
-          <svg
+        >
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+      ) : (
+        <svg
           fill="currentColor dark:white"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +37,7 @@ export function ThemeToggle() {
             clipRule="evenodd"
           ></path>
         </svg>
-        }
-      </button>
-  ) : null
+      )}
+    </button>
+  ) : null;
 }
