@@ -5,7 +5,7 @@ const Progress = ({
   value = 0,
   className = "",
   styleType = "gradient", // "solid" | "striped" | "gradient"
-  color = "bg-blue-500"
+  color = "bg-blue-500",
 }) => {
   const [progress, setProgress] = useState(0);
 
@@ -19,20 +19,20 @@ const Progress = ({
   const styleClass = {
     solid: color,
     striped: `bg-[repeating-linear-gradient(45deg,theme(colors.blue.500),theme(colors.blue.500)_10px,theme(colors.blue.400)_10px,theme(colors.blue.400)_20px)] animate-stripes`,
-    gradient: `bg-gradient-to-r from-blue-400 to-blue-600`
+    gradient: `bg-gradient-to-r from-blue-400 to-blue-600`,
   }[styleType];
 
   return (
     <div
       className={cn(
         "relative h-4 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700",
-        className
+        className,
       )}
     >
       <div
         className={cn(
           "h-full transition-all duration-1000 ease-out",
-          styleClass
+          styleClass,
         )}
         style={{ width: `${progress}%` }}
       />
@@ -40,4 +40,4 @@ const Progress = ({
   );
 };
 
-export { Progress }
+export { Progress };
