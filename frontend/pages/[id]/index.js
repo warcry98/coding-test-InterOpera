@@ -3,7 +3,6 @@
 import { Suspense, useEffect, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SalesRepDetails } from "@/components/sales-rep-details";
-import { notFound } from "next/navigation";
 import { useRouter } from "next/router";
 import { useSalesRep } from "@/lib/data";
 import { SalesRepDetailsSkeleton } from "@/components/sales-rep-details-skeleton";
