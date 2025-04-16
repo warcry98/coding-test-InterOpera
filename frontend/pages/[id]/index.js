@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { useRouter } from "next/router";
 import { useSalesRep } from "@/lib/data";
 import { SalesRepDetailsSkeleton } from "@/components/sales-rep-details-skeleton";
+import NotFound from "../not-found";
 
 export default function SalesRepPage({ params }) {
   const router = useRouter();
@@ -19,7 +20,9 @@ export default function SalesRepPage({ params }) {
     console.log(dataSalesRep);
   }, [dataSalesRep]);
 
-  if (dataError) return notFound();
+  if (dataError) {
+    return <NotFound />;
+  }
 
   return (
     <ThemeProvider

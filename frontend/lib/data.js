@@ -18,12 +18,11 @@ export function useSalesReps() {
 
 export function useSalesRep(id) {
   const { data, error, isLoading } = useSWR(
-    "http://localhost:8000/api/v1/data",
+    `http://localhost:8000/api/v1/data?id=${id}`,
     Get,
   );
-  const salesRep = data ? data["salesReps"].find((rep) => rep.id === id) : null;
   return {
-    dataSalesRep: salesRep,
+    dataSalesRep: data,
     dataError: error,
     dataLoading: isLoading,
   };

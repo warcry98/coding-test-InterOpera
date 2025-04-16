@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
@@ -6,6 +6,19 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export function SalesChart({ salesRep }) {
   const [showLegend, setShowLegend] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const matchDark = window.matchMedia("(prefers-color-scheme: dark)");
+    setIsDarkMode(matchDark.matches);
+
+    const handleChange = (e) => setIsDarkMode(e.matches);
+    matchDark.addEventListener("change", handleChange);
+
+    return () => {
+      matchDark.removeEventListener("change", handleChange);
+    };
+  }, []);
 
   const dealStats = {
     "Closed Won": salesRep.deals
@@ -32,12 +45,18 @@ export function SalesChart({ salesRep }) {
 
   const options = {
     responsive: true,
+    animation: {
+      animateRotate: true,
+      animateScale: true,
+      duration: 1000,
+      easing: "easeOutBounce",
+    },
     plugins: {
       legend: {
         display: showLegend,
         position: "bottom",
         labels: {
-          color: "#334155", // Dark text
+          color: isDarkMode ? "#e2e8f0" : "#334155",
           font: {
             size: 14,
           },

@@ -17,6 +17,7 @@ import { Badge } from "./ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { SalesChart } from "./sales-chart";
+import { Progress } from "./ui/progress";
 
 export function SalesRepDetails({ salesRep }) {
   const totalDealValue = salesRep
@@ -215,6 +216,94 @@ export function SalesRepDetails({ salesRep }) {
               </Card>
             </TabsContent>
           </Tabs>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="space-y-6"
+        >
+          <Card className="border-slate-200 dark:border-slate-700 overflow-hidden">
+            <CardHeader className="pb-2 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
+              <CardTitle className="text-lg">Performance</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between items-center mb-1 text-sm font-medium">
+                    <span>Deal Success Rate</span>
+                    <span>{progressPercentage}%</span>
+                  </div>
+                  <Progress value={progressPercentage} className="h-2" />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                    <div className="text-sm text-green-600 dark:text-green-400 mb-1">
+                      Closed Won
+                    </div>
+                    <div className="text-xl font-bold">
+                      ${closedWonValue.toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                    <div className="text-sm text-blue-600 dark:text-blue-400 mb-1">
+                      Total Value
+                    </div>
+                    <div className="text-xl font-bold">
+                      ${totalDealValue.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-slate-200 dark:border-slate-700 overflow-hidden">
+            <CardHeader className="pb-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+              <CardTitle className="text-lg">Skills</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="flex flex-wrap gap-2">
+                {salesRep.skills.map((skill, index) => (
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="font-normal text-sm py-1 px-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors"
+                  >
+                    {skill}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-slate-200 dark:border-slate-700 overflow-hidden">
+            <CardHeader className="pb-2 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+              <CardTitle className="text-lg">Ask AI Assistant</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                Get insights about {salesRep.name}'s performance using our AI
+                assistant.
+              </p>
+              <Button
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                onClick={() =>
+                  window.dispatchEvent(
+                    new CustomEvent("openAIChat", {
+                      detail: {
+                        initialPrompt: `Tell me about ${salesRep.name}'s sales performance and suggest ways to improve.`,
+                      },
+                    }),
+                  )
+                }
+              >
+                Analyze Performance
+              </Button>
+            </CardContent>
+          </Card>
         </motion.div>
       </div>
     </div>
