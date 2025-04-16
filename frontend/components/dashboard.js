@@ -9,7 +9,7 @@ import { FilterBar } from "@/components/filter-bar";
 import { SalesRepCard } from "./sales-rep-card";
 
 export function Dashboard() {
-  const { dataSalesReps, errorSalesReps, isLoadingSalesReps } = useSalesReps();
+  const { dataSalesReps } = useSalesReps();
   const [salesReps, setSalesReps] = useState(null);
   const [filteredReps, setFilteredReps] = useState([]);
   const [loading, setLoading] = useState(true);

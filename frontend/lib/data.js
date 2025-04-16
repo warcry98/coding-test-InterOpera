@@ -10,13 +10,21 @@ const Get = async (url) => {
 };
 
 export function useSalesReps() {
+  const { data } = useSWR("http://localhost:8000/api/v1/data", Get);
+  return {
+    dataSalesReps: data,
+  };
+}
+
+export function useSalesRep(id) {
   const { data, error, isLoading } = useSWR(
     "http://localhost:8000/api/v1/data",
     Get,
   );
+  const salesRep = data ? data["salesReps"].find((rep) => rep.id === id) : null;
   return {
-    dataSalesReps: data,
-    errorSalesReps: error,
-    isLoadingSalesReps: isLoading,
+    dataSalesRep: salesRep,
+    dataError: error,
+    dataLoading: isLoading,
   };
 }

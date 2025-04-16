@@ -165,10 +165,13 @@ export function SalesRepCard({ salesRep, viewMode }) {
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" variant="outline">
+          <Button
+            className="hover:bg-slate-300 dark:hover:bg-slate-600 w-full"
+            variant="outline"
+          >
             <Link
               href={`/${salesRep.id}`}
-              className="flex items-center justify-center"
+              className="w-full h-full flex items-center justify-center"
             >
               View Details
               <ChevronRight className="h-4 w-4 ml-1" />

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useDebounce } from "@/lib/useDebounce";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Button } from "@/components/ui/button";
 
 export function SearchBar({ onSearch }) {
