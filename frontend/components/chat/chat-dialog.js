@@ -7,6 +7,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { ChatMessage } from "./chat-message";
 import { SuggestedPrompts } from "./suggested-prompts";
 import { Input } from "../ui/input";
+import { postChatAI } from "@/lib/data";
 
 export function ChatDialog({ open, onOpenChange, initialPrompt = "" }) {
   const [messages, setMessages] = useState([
@@ -32,7 +33,11 @@ export function ChatDialog({ open, onOpenChange, initialPrompt = "" }) {
   }, [initialPrompt]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const timeout = setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
+
+    return () => clearTimeout(timeout);
   }, [messages]);
 
   const handleSend = async () => {
@@ -47,21 +52,27 @@ export function ChatDialog({ open, onOpenChange, initialPrompt = "" }) {
     setInput("");
     setIsLoading(true);
 
-    setTimeout(() => {
+    try {
+      const { data, error, dataLoading } = await postChatAI(input);
+
       let response = "";
 
-      if (input.toLowerCase().includes("performance")) {
-        response =
-          "Based on the data, this sales rep has a good closing rate but could improve their deal value. I recommend focusing on upselling strategies and targeting higher-value clients in their region.";
-      } else if (input.toLowerCase().includes("compare")) {
-        response =
-          "When comparing sales reps, I notice that those in North America tend to have higher average deal values, while those in Europe have better closing rates. This suggests regional differences in sales approaches.";
-      } else if (input.toLowerCase().includes("improve")) {
-        response =
-          "To improve performance, I recommend: 1) Focus on nurturing in-progress deals, 2) Implement a follow-up strategy for closed-lost opportunities, and 3) Cross-sell to existing clients to increase deal values.";
+      if (data && !error) {
+        response = data.answer;
       } else {
-        response =
-          "I've analyzed the sales data and noticed some interesting patterns. The rep has strengths in client relationship management but could improve their closing rate for high-value deals. Would you like specific recommendations for improvement?";
+        if (input.toLowerCase().includes("performance")) {
+          response =
+            "Based on the data, this sales rep has a good closing rate but could improve their deal value. I recommend focusing on upselling strategies and targeting higher-value clients in their region.";
+        } else if (input.toLowerCase().includes("compare")) {
+          response =
+            "When comparing sales reps, I notice that those in North America tend to have higher average deal values, while those in Europe have better closing rates. This suggests regional differences in sales approaches.";
+        } else if (input.toLowerCase().includes("improve")) {
+          response =
+            "To improve performance, I recommend: 1) Focus on nurturing in-progress deals, 2) Implement a follow-up strategy for closed-lost opportunities, and 3) Cross-sell to existing clients to increase deal values.";
+        } else {
+          response =
+            "I've analyzed the sales data and noticed some interesting patterns. The rep has strengths in client relationship management but could improve their closing rate for high-value deals. Would you like specific recommendations for improvement?";
+        }
       }
 
       const assistantMessage = {
@@ -70,8 +81,11 @@ export function ChatDialog({ open, onOpenChange, initialPrompt = "" }) {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+    } catch (err) {
+      console.error("Error posting to AI:", err);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -112,7 +126,7 @@ export function ChatDialog({ open, onOpenChange, initialPrompt = "" }) {
           </Button>
         </div>
 
-        <ScrollArea className="flex-1 p-4">
+        <ScrollArea className="flex-1 max-h-full p-4 overflow-y-auto">
           <div className="space-y-4">
             {messages.map((message, index) => (
               <ChatMessage key={index} message={message} />

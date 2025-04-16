@@ -1,4 +1,6 @@
 import { Bot, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 export function ChatMessage({ message }) {
   const isUser = message.role === "user";
@@ -21,11 +23,42 @@ export function ChatMessage({ message }) {
           </div>
         </div>
         <div className="prose prose-slate dark:prose-invert prose-p:leading-relaxed prose-pre:p-0">
-          {message.content.split("\n").map((text, i) => (
-            <p key={i} className="text-slate-700 dark:text-slate-300 text-base">
-              {text}
-            </p>
-          ))}
+          <ReactMarkdown
+            components={{
+              p: ({ node, ...props }) => (
+                <p
+                  className="text-slate-700 dark:text-slate-300 text-base sm:text-sm md:text-lg"
+                  {...props}
+                />
+              ),
+              code: ({ node, ...props }) => (
+                <code
+                  className="bg-slate-100 dark:bg-slate-700 text-red-600 px-1 py-0.5 rounded sm:text-xs md:text-sm lg:text-base"
+                  {...props}
+                />
+              ),
+              ul: ({ node, ...props }) => (
+                <ul
+                  className="list-disc list-inside text-slate-700 dark:text-slate-300 sm:text-xs md:text-sm lg:text-base"
+                  {...props}
+                />
+              ),
+              ol: ({ node, ...props }) => (
+                <ol
+                  className="list-decimal list-inside text-slate-700 dark:text-slate-300 sm:text-xs md:text-sm lg:text-base"
+                  {...props}
+                />
+              ),
+              a: ({ node, ...props }) => (
+                <a
+                  className="text-blue-500 hover:underline sm:text-xs md:text-sm lg:text-base"
+                  {...props}
+                />
+              ),
+            }}
+          >
+            {message.content}
+          </ReactMarkdown>
         </div>
       </div>
     </div>

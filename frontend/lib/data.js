@@ -38,3 +38,38 @@ export function getSalesRep(id) {
 
   return promise.then(() => ({ data, error, isLoading }));
 }
+
+export function postChatAI(question) {
+  let isLoading = true;
+  let data = null;
+  let error = null;
+
+  const promise = fetch("http://localhost:8000/api/v1/ai", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      question,
+    }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to fetch");
+      }
+      return res.json();
+    })
+    .then((json) => {
+      data = json;
+    })
+    .catch((err) => {
+      error = err;
+      console.error("Error fetching sales rep:", err);
+    })
+    .finally(() => {
+      isLoading = false;
+    });
+
+  return promise.then(() => ({ data, error, isLoading }));
+}
