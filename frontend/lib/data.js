@@ -7,7 +7,10 @@ const Get = async (url) => {
 };
 
 export function useSalesReps() {
-  const { data } = useSWR("http://localhost:8000/api/v1/data", Get);
+  const { data } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/data`,
+    Get,
+  );
   return {
     dataSalesReps: data,
   };
@@ -18,7 +21,9 @@ export function getSalesRep(id) {
   let data = null;
   let error = null;
 
-  const promise = fetch(`http://localhost:8000/api/v1/data?id=${id}`)
+  const promise = fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/data?id=${id}`,
+  )
     .then((res) => {
       if (!res.ok) {
         throw new Error("Failed to fetch");
@@ -44,7 +49,7 @@ export function postChatAI(question) {
   let data = null;
   let error = null;
 
-  const promise = fetch("http://localhost:8000/api/v1/ai", {
+  const promise = fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/ai`, {
     method: "POST",
     headers: {
       Accept: "application/json",
