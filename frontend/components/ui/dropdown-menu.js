@@ -17,7 +17,7 @@ export const DropdownMenuContent = (props) => (
       {...props}
       className={cn(
         "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 shadow-md animate-in fade-in-80",
-        props.className
+        props.className,
       )}
     />
   </DropdownMenuPrimitive.Portal>
@@ -29,17 +29,22 @@ export const DropdownMenuItem = ({ className, ...props }) => (
     className={cn(
       "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground",
       props.disabled && "pointer-events-none opacity-50",
-      className
+      className,
     )}
   />
 );
 
-export const DropdownMenuCheckboxItem = ({ className, checked, children, ...props }) => (
+export const DropdownMenuCheckboxItem = ({
+  className,
+  checked,
+  children,
+  ...props
+}) => (
   <DropdownMenuPrimitive.CheckboxItem
     {...props}
     className={cn(
       "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground",
-      className
+      className,
     )}
     checked={checked}
   >
@@ -57,7 +62,7 @@ export const DropdownMenuRadioItem = ({ className, children, ...props }) => (
     {...props}
     className={cn(
       "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground",
-      className
+      className,
     )}
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
@@ -72,7 +77,11 @@ export const DropdownMenuRadioItem = ({ className, children, ...props }) => (
 export const DropdownMenuLabel = ({ className, inset, ...props }) => (
   <DropdownMenuPrimitive.Label
     {...props}
-    className={cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", props.className)}
+    className={cn(
+      "px-2 py-1.5 text-sm font-semibold",
+      inset && "pl-8",
+      props.className,
+    )}
   />
 );
 
@@ -84,16 +93,24 @@ export const DropdownMenuSeparator = ({ className, ...props }) => (
 );
 
 export const DropdownMenuShortcut = ({ className, ...props }) => (
-  <span className={cn("ml-auto text-xs tracking-widest opacity-60", className)} {...props} />
+  <span
+    className={cn("ml-auto text-xs tracking-widest opacity-60", className)}
+    {...props}
+  />
 );
 
-export const DropdownMenuSubTrigger = ({ className, inset, children, ...props }) => (
+export const DropdownMenuSubTrigger = ({
+  className,
+  inset,
+  children,
+  ...props
+}) => (
   <DropdownMenuPrimitive.SubTrigger
     {...props}
     className={cn(
       "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground",
       inset && "pl-8",
-      className
+      className,
     )}
   >
     {children}
@@ -106,7 +123,7 @@ export const DropdownMenuSubContent = ({ className, ...props }) => (
     {...props}
     className={cn(
       "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 shadow-md animate-in slide-in-from-left-1 fade-in-80",
-      className
+      className,
     )}
   />
 );

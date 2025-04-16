@@ -11,12 +11,12 @@ export function Dashboard() {
   const { dataSalesReps, errorSalesReps, isLoadingSalesReps } = useSalesReps();
   const [salesReps, setSalesReps] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     regions: ["all"],
     roles: ["all"],
     dealStatuses: ["all"],
-  })
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -27,16 +27,16 @@ export function Dashboard() {
   }, [dataSalesReps]);
 
   const haneldFilterBarRender = () => {
-    setFilterBarReady(true)
-  }
+    setFilterBarReady(true);
+  };
 
   const handleFilterChange = (newFilters) => {
-    setFilters(prev => ({ ...prev, ...newFilters }))
-  }
+    setFilters((prev) => ({ ...prev, ...newFilters }));
+  };
 
   const handleSearch = (query) => {
-    setSearchQuery(query)
-  }
+    setSearchQuery(query);
+  };
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -53,7 +53,12 @@ export function Dashboard() {
           <div className="flex flex-col md:flex-row gap-4">
             {!loading && salesReps && <SearchBar onSearch={handleSearch} />}
             <div className="flex flex-wrap gap-2 md:ml-auto">
-              {!loading && salesReps && <FilterBar onFilterChange={handleFilterChange} salesReps={salesReps} />}
+              {!loading && salesReps && (
+                <FilterBar
+                  onFilterChange={handleFilterChange}
+                  salesReps={salesReps}
+                />
+              )}
             </div>
           </div>
         </div>

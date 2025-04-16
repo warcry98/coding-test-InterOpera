@@ -1,15 +1,24 @@
 import { useState, useEffect } from "react";
 import { Filter, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuCheckboxItem } from "./ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
+} from "./ui/dropdown-menu";
 
 export function FilterBar({ onFilterChange, salesReps }) {
-  const [regions, setRegions] = useState([])
-  const [roles, setRoles] = useState([])
-  const [dealStatuses, setDealStatuses] = useState([])
-  const [selectedRegions, setSelectedRegion] = useState(["all"])
-  const [selectedRoles, setSelectedRole] = useState(["all"])
-  const [selectedDealStatuses, setSelectedDealStatus] = useState(["all"])
+  const [regions, setRegions] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [dealStatuses, setDealStatuses] = useState([]);
+  const [selectedRegions, setSelectedRegion] = useState(["all"]);
+  const [selectedRoles, setSelectedRole] = useState(["all"]);
+  const [selectedDealStatuses, setSelectedDealStatus] = useState(["all"]);
 
   useEffect(() => {
     if (onFilterChange) {
@@ -17,102 +26,105 @@ export function FilterBar({ onFilterChange, salesReps }) {
         regions: selectedRegions,
         roles: selectedRoles,
         dealStatuses: selectedDealStatuses,
-      })
+      });
     }
-  }, [selectedRegions, selectedRoles, selectedDealStatuses])
+  }, [selectedRegions, selectedRoles, selectedDealStatuses]);
 
   useEffect(() => {
     if (salesReps.length > 0) {
-      const uniqueRegions = [...new Set(salesReps.map((rep) => rep.region))]
-      setRegions(uniqueRegions)
+      const uniqueRegions = [...new Set(salesReps.map((rep) => rep.region))];
+      setRegions(uniqueRegions);
 
-      const uniqueRoles = [...new Set(salesReps.map((rep) => rep.role))]
-      setRoles(uniqueRoles)
+      const uniqueRoles = [...new Set(salesReps.map((rep) => rep.role))];
+      setRoles(uniqueRoles);
 
-      const statuses = salesReps.flatMap((rep) => rep.deals.map((deal) => deal.status))
-      const uniqueStatuses = [...new Set(statuses)]
-      setDealStatuses(uniqueStatuses)
+      const statuses = salesReps.flatMap((rep) =>
+        rep.deals.map((deal) => deal.status),
+      );
+      const uniqueStatuses = [...new Set(statuses)];
+      setDealStatuses(uniqueStatuses);
     }
-  }, [salesReps])
+  }, [salesReps]);
 
   const handleRegionChange = (value) => {
     setSelectedRegion((prev) => {
       if (value === "all") {
-        return ["all"]
+        return ["all"];
       }
 
-      let updated = prev.includes("all") ? [] : [...prev]
+      let updated = prev.includes("all") ? [] : [...prev];
       if (updated.includes(value)) {
-        updated = updated.filter((r) => r !== value)
+        updated = updated.filter((r) => r !== value);
       } else {
-        updated.push(value)
+        updated.push(value);
       }
 
       if (updated.length === 0) {
-        updated = ["all"]
+        updated = ["all"];
       }
 
-      return updated
-    })
-  }
+      return updated;
+    });
+  };
 
   const handleRoleChange = (value) => {
     setSelectedRole((prev) => {
       if (value === "all") {
-        return ["all"]
+        return ["all"];
       }
 
-      let updated = prev.includes("all") ? [] : [...prev]
+      let updated = prev.includes("all") ? [] : [...prev];
       if (updated.includes(value)) {
-        updated = updated.filter((r) => r !== value)
+        updated = updated.filter((r) => r !== value);
       } else {
-        updated.push(value)
+        updated.push(value);
       }
 
       if (updated.length === 0) {
-        updated = ["all"]
+        updated = ["all"];
       }
 
-      return updated
-    })
-  }
+      return updated;
+    });
+  };
 
   const handleDealStatusChange = (value) => {
     setSelectedDealStatus((prev) => {
       if (value === "all") {
-        return ["all"]
+        return ["all"];
       }
 
-      let updated = prev.includes("all") ? [] : [...prev]
+      let updated = prev.includes("all") ? [] : [...prev];
       if (updated.includes(value)) {
-        updated = updated.filter((r) => r !== value)
+        updated = updated.filter((r) => r !== value);
       } else {
-        updated.push(value)
+        updated.push(value);
       }
 
       if (updated.length === 0) {
-        updated = ["all"]
+        updated = ["all"];
       }
 
-      return updated
-    })
-  }
+      return updated;
+    });
+  };
 
   const handleReset = () => {
-    setSelectedRegion(["all"])
-    setSelectedRole(["all"])
-    setSelectedDealStatus(["all"])
-  }
+    setSelectedRegion(["all"]);
+    setSelectedRole(["all"]);
+    setSelectedDealStatus(["all"]);
+  };
 
   const getActiveFilterCount = () => {
-    let count = 0
-    if (!selectedRegions.includes("all")) count += selectedRegions.length
-    if (!selectedRoles.includes("all")) count += selectedRoles.length
-    if (!selectedDealStatuses.includes("all")) count += selectedDealStatuses.length
-    return count
-  }
+    let count = 0;
+    if (!selectedRegions.includes("all")) count += selectedRegions.length;
+    if (!selectedRoles.includes("all")) count += selectedRoles.length;
+    if (!selectedDealStatuses.includes("all"))
+      count += selectedDealStatuses.length;
+    return count;
+  };
 
-  const activeFilterCount = getActiveFilterCount()
+  const activeFilterCount = getActiveFilterCount();
 
   return (
     <DropdownMenu>
@@ -224,5 +236,5 @@ export function FilterBar({ onFilterChange, salesReps }) {
         )}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
