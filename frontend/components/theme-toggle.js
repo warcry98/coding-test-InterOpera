@@ -1,5 +1,6 @@
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
@@ -9,13 +10,14 @@ export function ThemeToggle() {
   useEffect(() => {
     setMount(true);
   }, []);
-  console.log(currentTheme);
 
   return mount ? (
-    <button
+    <Button
+      variant="outline"
+      size="icon"
       onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
       type="button"
-      className="flex h-10 w-10 p-2 items-center justify-center rounded-md border-gray-800 text-gray-800 focus:outline-none focus:ring-0 focus:ring-gray-200 dark:border-slate-300 dark:text-white"
+      className="rounded-full"
     >
       {theme === "dark" ? (
         <svg
@@ -38,6 +40,6 @@ export function ThemeToggle() {
           ></path>
         </svg>
       )}
-    </button>
+    </Button>
   ) : null;
 }
