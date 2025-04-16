@@ -4,22 +4,30 @@ import { Suspense, useEffect, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SalesRepDetails } from "@/components/sales-rep-details";
 import { useRouter } from "next/router";
-import { useSalesRep } from "@/lib/data";
+import { getSalesRep, useSalesRep } from "@/lib/data";
 import { SalesRepDetailsSkeleton } from "@/components/sales-rep-details-skeleton";
 import NotFound from "../not-found";
 
-export default function SalesRepPage({ params }) {
+export default function SalesRepPage() {
   const router = useRouter();
   const { id } = router.query;
 
   const parsedId = id ? parseInt(id) : null;
-  const { dataSalesRep, dataError, dataLoading } = useSalesRep(parsedId);
+  const [dataSalesRep, setDataSalesRep] = useState({});
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log(dataSalesRep);
-  }, [dataSalesRep]);
+    if (parsedId) {
+      getSalesRep(parsedId).then(({ data, error, isLoading }) => {
+        setDataSalesRep(data);
+        setError(error);
+        setIsLoading(isLoading);
+      });
+    }
+  }, [parsedId]);
 
-  if (dataError) {
+  if (error) {
     return <NotFound />;
   }
 
@@ -32,7 +40,7 @@ export default function SalesRepPage({ params }) {
     >
       <main>
         <Suspense>
-          {dataLoading ? (
+          {isLoading ? (
             <SalesRepDetailsSkeleton />
           ) : (
             <SalesRepDetails salesRep={dataSalesRep} />

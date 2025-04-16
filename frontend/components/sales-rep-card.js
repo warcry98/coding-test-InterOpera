@@ -57,7 +57,6 @@ export function SalesRepCard({ salesRep, viewMode }) {
   };
 
   const getRegionColor = (region) => {
-    console.log(region);
     switch (region) {
       case "North America":
         return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300";

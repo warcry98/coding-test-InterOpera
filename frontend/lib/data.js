@@ -1,9 +1,6 @@
 import useSWR from "swr";
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 const Get = async (url) => {
-  await delay(1000);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch");
   return res.json();
@@ -16,14 +13,28 @@ export function useSalesReps() {
   };
 }
 
-export function useSalesRep(id) {
-  const { data, error, isLoading } = useSWR(
-    `http://localhost:8000/api/v1/data?id=${id}`,
-    Get,
-  );
-  return {
-    dataSalesRep: data,
-    dataError: error,
-    dataLoading: isLoading,
-  };
+export function getSalesRep(id) {
+  let isLoading = true;
+  let data = null;
+  let error = null;
+
+  const promise = fetch(`http://localhost:8000/api/v1/data?id=${id}`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to fetch");
+      }
+      return res.json();
+    })
+    .then((json) => {
+      data = json;
+    })
+    .catch((err) => {
+      error = err;
+      console.error("Error fetching sales rep:", err);
+    })
+    .finally(() => {
+      isLoading = false;
+    });
+
+  return promise.then(() => ({ data, error, isLoading }));
 }

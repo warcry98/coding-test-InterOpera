@@ -7,18 +7,22 @@ import { DashboardStats } from "@/components/dashboard-stats";
 import { SearchBar } from "@/components/search-bar";
 import { FilterBar } from "@/components/filter-bar";
 import { SalesRepCard } from "./sales-rep-card";
+import { ChatButton } from "./chat/chat-button";
+import { SortOptions } from "./sort-options";
 
 export function Dashboard() {
   const { dataSalesReps } = useSalesReps();
   const [salesReps, setSalesReps] = useState(null);
   const [filteredReps, setFilteredReps] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
     regions: ["all"],
     roles: ["all"],
     dealStatuses: ["all"],
   });
+  const [sortBy, setSortBy] = useState("name");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState("grid");
 
   useEffect(() => {
@@ -33,6 +37,23 @@ export function Dashboard() {
     if (salesReps) {
       let result = [...salesReps];
 
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        result = result.filter(
+          (rep) =>
+            rep.name.toLowerCase().includes(query) ||
+            rep.role.toLowerCase().includes(query) ||
+            rep.region.toLowerCase().includes(query) ||
+            rep.skills.some((skill) => skill.toLowerCase().includes(query)) ||
+            rep.deals.some((deal) =>
+              deal.client.toLowerCase().includes(query),
+            ) ||
+            rep.clients.some((client) =>
+              client.name.toLowerCase().includes(query),
+            ),
+        );
+      }
+
       if (filters.regions && !filters.regions.includes("all")) {
         result = result.filter((rep) => filters.regions.includes(rep.region));
       }
@@ -45,19 +66,53 @@ export function Dashboard() {
         result = result.filter((rep) =>
           rep.deals.some((deal) => filters.dealStatuses.includes(deal.status)),
         );
-        console.log(result);
       }
+
+      result.sort((a, b) => {
+        let comparison = 0;
+
+        switch (sortBy) {
+          case "name":
+            comparison = a.name.localeCompare(b.name);
+            break;
+          case "dealValue":
+            const aTotal = a.deals.reduce((sum, deal) => sum + deal.value, 0);
+            const bTotal = b.deals.reduce((sum, deal) => sum + deal.value, 0);
+            comparison = aTotal - bTotal;
+            break;
+          case "clientCount":
+            comparison = a.clients.length - b.clients.length;
+            break;
+          default:
+            comparison = 0;
+        }
+
+        return sortOrder === "asc" ? comparison : -comparison;
+      });
 
       setFilteredReps(result);
     }
-  }, [salesReps, filters]);
+  }, [salesReps, filters, sortBy, sortOrder, searchQuery]);
 
   const handleFilterChange = (newFilters) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
   };
 
+  const handleSortChange = (option) => {
+    if (sortBy === option) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(option);
+      setSortOrder("asc");
+    }
+  };
+
   const handleSearch = (query) => {
     setSearchQuery(query);
+  };
+
+  const toggleViewMode = () => {
+    setViewMode(viewMode === "grid" ? "list" : "grid");
   };
 
   const container = {
@@ -90,11 +145,16 @@ export function Dashboard() {
         >
           <div className="bg-white  dark:bg-slate-800 rounded-lg shadow-md p-4 border border-slate-200 dark:border-slate-700">
             <div className="flex flex-col md:flex-row gap-4">
-              {!loading && salesReps && <SearchBar onSearch={handleSearch} />}
+              <SearchBar onSearch={handleSearch} />
               <div className="flex flex-wrap gap-2 md:ml-auto">
                 <FilterBar
                   onFilterChange={handleFilterChange}
                   salesReps={salesReps}
+                />
+                <SortOptions
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
+                  onSortChange={handleSortChange}
                 />
               </div>
             </div>
@@ -168,6 +228,8 @@ export function Dashboard() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <ChatButton />
     </div>
   );
 }
