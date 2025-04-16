@@ -5,6 +5,7 @@ import { Briefcase, CheckCircle, ChevronRight, Clock, Users, XCircle } from "luc
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { ToolTip, ToolTipContent, ToolTipProvider, ToolTipTrigger } from "./ui/tooltip";
 
 export function SalesRepCard({ salesRep, viewMode }) {
   const totalDealValue = salesRep.deals.reduce((sum, deal) => sum + deal.value, 0)
@@ -79,12 +80,27 @@ export function SalesRepCard({ salesRep, viewMode }) {
                 <Users className="h-4 w-4 mr-1 text-blue-500" />
                 Clients: {salesRep.clients.length}
               </h4>
+              <div className="grid grid-cols-2 gap-2">
+                {salesRep.clients.slice(0, 2).map((client, index) => (
+                  <ToolTipProvider key={index}>
+                    <ToolTip>
+                      <ToolTipTrigger asChild>
+                        <div className="bg-slate-100 dark:bg-slate-800 rounded p-2 text-xs truncate">{client.name}</div>
+                      </ToolTipTrigger>
+                      <ToolTipContent className="bg-slate-100 dark:bg-slate-800">
+                        <p>{client.industry}</p>
+                        <p className="text-xs">{client.contact}</p>
+                      </ToolTipContent>
+                    </ToolTip>
+                  </ToolTipProvider>
+                ))}
+              </div>
             </div>
 
             <div>
               <h4 className="text-sm font-semibold mb-2">Recent Deals</h4>
               <ul className="space-y-2">
-                {salesRep.deals.slice(0, 2).map((deal, index) => (
+                {salesRep.deals.slice(0, 3).map((deal, index) => (
                   <li key={index} className="flex items-center justify-between text-sm">
                     <div className="flex items-center">
                       {getDealStatusIcon(deal.status)}

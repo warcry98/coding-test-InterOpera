@@ -37,6 +37,15 @@ export function Dashboard() {
         result = result.filter((rep) => filters.regions.includes(rep.region))
       }
 
+      if (filters.roles && !filters.roles.includes("all")) {
+        result = result.filter((rep) => filters.roles.includes(rep.role))
+      }
+
+      if (filters.dealStatuses && !filters.dealStatuses.includes("all")) {
+        result = result.filter((rep) => rep.deals.some(deal => filters.dealStatuses.includes(deal.status)))
+        console.log(result)
+      }
+
       setFilteredReps(result)
     }
   }, [salesReps, filters])
@@ -119,6 +128,34 @@ export function Dashboard() {
           {filteredReps.map((rep) => (
             <SalesRepCard key={rep.id} salesRep={rep} viewMode={viewMode} />
           ))}
+
+          {filteredReps.length === 0 && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="col-span-full text-center py-12">
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 max-w-md mx-auto">
+                <div className="text-amber-500 mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-12 w-12 mx-auto"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <p className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">No results found</p>
+                <p className="text-slate-500 dark:text-slate-400">
+                  Try adjusting your search or filter criteria to find what you're looking for.
+                </p>
+              </div>
+            </motion.div>
+          )}
+
         </motion.div>
       )}
     </AnimatePresence>

@@ -143,7 +143,7 @@ export function FilterBar({ onFilterChange, salesReps }) {
           <ChevronDown className="h-4 w-4 ml-1" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-72 max-h-60 overflow-y-auto">
+      <DropdownMenuContent className="w-72 max-h-60 overflow-y-auto bg-white dark:bg-slate-800">
         <DropdownMenuLabel>Filter Sales Representatives</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
