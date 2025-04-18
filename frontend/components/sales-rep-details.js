@@ -143,13 +143,22 @@ export function SalesRepDetails({ salesRep }) {
               className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4"
             >
               <TabsList className="mb-4 grid grid-cols-3 h-auto p-1 bg-slate-100 dark:bg-slate-700">
-                <TabsTrigger value="deals" className="py-2">
+                <TabsTrigger
+                  value="deals"
+                  className="py-2 data-[state=active]:bg-sky-100 data-[state=active]:dark:bg-slate-800"
+                >
                   Deals
                 </TabsTrigger>
-                <TabsTrigger value="clients" className="py-2">
+                <TabsTrigger
+                  value="clients"
+                  className="py-2 data-[state=active]:bg-sky-100 data-[state=active]:dark:bg-slate-800"
+                >
                   Clients
                 </TabsTrigger>
-                <TabsTrigger value="analytics" className="py-2">
+                <TabsTrigger
+                  value="analytics"
+                  className="py-2 data-[state=active]:bg-sky-100 data-[state=active]:dark:bg-slate-800"
+                >
                   Analytics
                 </TabsTrigger>
               </TabsList>

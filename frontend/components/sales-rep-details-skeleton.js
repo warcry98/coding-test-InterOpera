@@ -24,6 +24,7 @@ export function SalesRepDetailsSkeleton() {
             <TabsList className="mb-4">
               <TabsTrigger value="deals">Deals</TabsTrigger>
               <TabsTrigger value="clients">Clients</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
             </TabsList>
 
             <TabsContent value="deals" className="space-y-4">

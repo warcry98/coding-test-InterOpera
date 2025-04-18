@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSalesReps } from "@/lib/data";
+import { postSalesReps, useSalesReps } from "@/lib/data";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { DashboardStats } from "@/components/dashboard-stats";
@@ -11,10 +11,12 @@ import { ChatButton } from "./chat/chat-button";
 import { SortOptions } from "./sort-options";
 
 export function Dashboard() {
-  const { dataSalesReps } = useSalesReps();
+  const { dataSalesReps, errorSalesReps } = useSalesReps();
   const [salesReps, setSalesReps] = useState(null);
   const [filteredReps, setFilteredReps] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [filterLoading, setFilterLoading] = useState(false);
   const [filters, setFilters] = useState({
     regions: ["all"],
     roles: ["all"],
@@ -28,71 +30,30 @@ export function Dashboard() {
   useEffect(() => {
     setLoading(true);
     if (dataSalesReps) {
-      setSalesReps(dataSalesReps["salesReps"]);
+      setSalesReps(dataSalesReps["data"]);
       setLoading(false);
+      setError(false);
     }
-  }, [dataSalesReps]);
+    if (errorSalesReps) {
+      setLoading(false);
+      setError(true);
+    }
+  }, [dataSalesReps, errorSalesReps]);
 
   useEffect(() => {
-    if (salesReps) {
-      let result = [...salesReps];
-
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        result = result.filter(
-          (rep) =>
-            rep.name.toLowerCase().includes(query) ||
-            rep.role.toLowerCase().includes(query) ||
-            rep.region.toLowerCase().includes(query) ||
-            rep.skills.some((skill) => skill.toLowerCase().includes(query)) ||
-            rep.deals.some((deal) =>
-              deal.client.toLowerCase().includes(query),
-            ) ||
-            rep.clients.some((client) =>
-              client.name.toLowerCase().includes(query),
-            ),
-        );
-      }
-
-      if (filters.regions && !filters.regions.includes("all")) {
-        result = result.filter((rep) => filters.regions.includes(rep.region));
-      }
-
-      if (filters.roles && !filters.roles.includes("all")) {
-        result = result.filter((rep) => filters.roles.includes(rep.role));
-      }
-
-      if (filters.dealStatuses && !filters.dealStatuses.includes("all")) {
-        result = result.filter((rep) =>
-          rep.deals.some((deal) => filters.dealStatuses.includes(deal.status)),
-        );
-      }
-
-      result.sort((a, b) => {
-        let comparison = 0;
-
-        switch (sortBy) {
-          case "name":
-            comparison = a.name.localeCompare(b.name);
-            break;
-          case "dealValue":
-            const aTotal = a.deals.reduce((sum, deal) => sum + deal.value, 0);
-            const bTotal = b.deals.reduce((sum, deal) => sum + deal.value, 0);
-            comparison = aTotal - bTotal;
-            break;
-          case "clientCount":
-            comparison = a.clients.length - b.clients.length;
-            break;
-          default:
-            comparison = 0;
+    setFilterLoading(true);
+    postSalesReps(searchQuery, filters, sortBy, sortOrder).then(
+      ({ data, dataError, dataLoading }) => {
+        if (data) {
+          setFilteredReps(data["data"]);
+          setError(false);
+        } else if (dataError) {
+          setError(true);
         }
-
-        return sortOrder === "asc" ? comparison : -comparison;
-      });
-
-      setFilteredReps(result);
-    }
-  }, [salesReps, filters, sortBy, sortOrder, searchQuery]);
+        setFilterLoading(dataLoading);
+      },
+    );
+  }, [filters, sortBy, sortOrder, searchQuery]);
 
   const handleFilterChange = (newFilters) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
@@ -163,7 +124,7 @@ export function Dashboard() {
       )}
 
       <AnimatePresence mode="wait">
-        {loading ? (
+        {loading || filterLoading ? (
           <motion.div
             key="loading"
             initial={{ opacity: 0 }}
@@ -215,13 +176,27 @@ export function Dashboard() {
                       />
                     </svg>
                   </div>
-                  <p className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                    No results found
-                  </p>
-                  <p className="text-slate-500 dark:text-slate-400">
-                    Try adjusting your search or filter criteria to find what
-                    you're looking for.
-                  </p>
+                  {!error ? (
+                    <>
+                      <p className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                        No results found
+                      </p>
+                      <p className="text-slate-500 dark:text-slate-400">
+                        Try adjusting your search or filter criteria to find
+                        what you're looking for.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                        Server unreachable
+                      </p>
+                      <p className="text-slate-500 dark:text-slate-400">
+                        Please verify your network or contact support if the
+                        issue persists.
+                      </p>
+                    </>
+                  )}
                 </div>
               </motion.div>
             )}

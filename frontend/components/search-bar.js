@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -8,10 +8,13 @@ export function SearchBar({ onSearch }) {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
 
+  useEffect(() => {
+    onSearch(debouncedSearch);
+  }, [debouncedSearch, onSearch]);
+
   const handleChange = (e) => {
     const value = e.target.value;
     setSearch(value);
-    onSearch(value);
   };
 
   const handleClear = () => {
