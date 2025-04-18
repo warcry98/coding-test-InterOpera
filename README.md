@@ -87,6 +87,12 @@ This is a full-stack project with a **FastAPI** backend and a **Next.js (Page Ro
 │  ├─ postcss.config.mjs
 │  └─ tailwind.config.js
 ├─ .pre-commit-config.yaml
+├─ dark1.png
+├─ dark2.png
+├─ dark3.png
+├─ light1.png
+├─ light2.png
+├─ light3.png
 └─ README.md
 ```
 
