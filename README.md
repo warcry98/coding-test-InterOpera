@@ -7,6 +7,13 @@ This is a full-stack project with a **FastAPI** backend and a **Next.js (Page Ro
 
 ---
 
+## 🖼 Screenshots
+### 🌞 Light Mode
+![Light Mode 1](./light1.png)![Light Mode 2](./light2.png)![Light Mode 3](./light3.png)
+### 🌙 Dark Mode
+![Dark Mode 1](./dark1.png)![Dark Mode 2](./dark2.png)![Dark Mode 3](./dark3.png)
+---
+
 ## 📁 Project Structure
 
 ```
