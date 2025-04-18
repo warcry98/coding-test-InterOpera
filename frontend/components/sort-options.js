@@ -21,9 +21,9 @@ export function SortOptions({ sortBy, sortOrder, onSortChange }) {
       ) : (
         <ArrowDownAZ className="h-4 w-4 mr-2" />
       );
-    } else if (sortBy === "dealValue") {
+    } else if (sortBy === "deal_value") {
       return <DollarSign className="h-4 w-4 mr-2" />;
-    } else if (sortBy === "clientCount") {
+    } else if (sortBy === "client_count") {
       return <Users className="h-4 w-4 mr-2" />;
     }
     return <ArrowDownUp className="h-4 w-4 mr-2" />;
@@ -33,9 +33,9 @@ export function SortOptions({ sortBy, sortOrder, onSortChange }) {
     switch (sortBy) {
       case "name":
         return `Name (${sortOrder === "asc" ? "A-Z" : "Z-A"})`;
-      case "dealValue":
+      case "deal_value":
         return `Deal Value (${sortOrder === "asc" ? "Low-High" : "High-Low"})`;
-      case "clientCount":
+      case "client_count":
         return `Client Count (${sortOrder === "asc" ? "Low-High" : "High-Low"})`;
       default:
         return "Sort By";
@@ -65,14 +65,14 @@ export function SortOptions({ sortBy, sortOrder, onSortChange }) {
           Name
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => onSortChange("dealValue")}
+          onClick={() => onSortChange("deal_value")}
           className="cursor-pointer"
         >
           <DollarSign className="h-4 w-4 mr-2" />
           Deal Value
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => onSortChange("clientCount")}
+          onClick={() => onSortChange("client_count")}
           className="cursor-pointer"
         >
           <Users className="h-4 w-4 mr-2" />
