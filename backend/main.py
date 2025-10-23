@@ -13,6 +13,7 @@ from utils.summary import BuildSummary
 
 app = FastAPI()
 api_v1 = APIRouter(prefix="/v1")
+api_router = APIRouter(prefix="/api")
 
 origins = ["https://frontend-liard-seven-59.vercel.app"]
 # origins = ["*"]
@@ -38,7 +39,7 @@ class SortBy(str, Enum):
     client_count = "client_count"
 
 
-@api_v1.post("/data")
+@api_router.post("/data")
 async def post_data(
     id: Optional[int] = None,
     search: Optional[str] = Form(""),
@@ -100,7 +101,7 @@ async def post_data(
     return {"data": result}
 
 
-@api_v1.get("/data")
+@api_router.get("/data")
 async def get_data(id: Optional[int] = None):
     if id is not None:
         data_sales = [data for data in DUMMY_DATA["salesReps"] if data["id"] == int(id)]
@@ -110,7 +111,7 @@ async def get_data(id: Optional[int] = None):
     return DUMMY_DATA
 
 
-@api_v1.post("/ai")
+@api_router.post("/ai")
 async def post_ai(question: str = Form(...)):
     build_summary = BuildSummary(DUMMY_DATA)
     summary = build_summary.summary()
@@ -149,6 +150,7 @@ def health():
 
 
 app.include_router(api_v1)
+app.include_router(api_router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
