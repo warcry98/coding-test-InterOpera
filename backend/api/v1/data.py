@@ -3,10 +3,10 @@ from enum import Enum
 from typing import Optional
 
 from env_load import DUMMY_DATA
-from fastapi import APIRouter, Form, HTTPException
+from fastapi import FastAPI, Form, HTTPException
 from fastapi.responses import JSONResponse
 
-router = APIRouter(prefix="/v1")
+app = FastAPI()
 
 
 class SortOrder(str, Enum):
@@ -22,7 +22,7 @@ class SortBy(str, Enum):
     client_count = "client_count"
 
 
-@router.post("/data")
+@app.post("/")
 async def post(
     id: Optional[int] = None,
     search: Optional[str] = Form(""),
@@ -84,7 +84,7 @@ async def post(
     return {"data": result}
 
 
-@router.get("/data")
+@app.get("/")
 async def get(id: Optional[int] = None):
     if id is not None:
         data_sales = [data for data in DUMMY_DATA["salesReps"] if data["id"] == int(id)]

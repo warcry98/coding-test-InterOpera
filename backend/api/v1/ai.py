@@ -2,13 +2,13 @@ import os
 
 import google.generativeai as genai
 from env_load import DUMMY_DATA
-from fastapi import APIRouter, Form, HTTPException
+from fastapi import FastAPI, Form, HTTPException
 from utils.summary import BuildSummary
 
-router = APIRouter(prefix="/v1")
+app = FastAPI()
 
 
-@router.post("/ai")
+@app.post("/")
 async def post(question: str = Form(...)):
     build_summary = BuildSummary(DUMMY_DATA)
     summary = build_summary.summary()
