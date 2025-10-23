@@ -6,7 +6,7 @@ from env_load import DUMMY_DATA
 from fastapi import APIRouter, Form, HTTPException
 from fastapi.responses import JSONResponse
 
-router = APIRouter()
+router = APIRouter(prefix="/v1")
 
 
 class SortOrder(str, Enum):
@@ -22,7 +22,7 @@ class SortBy(str, Enum):
     client_count = "client_count"
 
 
-@router.post("/v1/data")
+@router.post("/data")
 async def post(
     id: Optional[int] = None,
     search: Optional[str] = Form(""),
@@ -82,3 +82,13 @@ async def post(
     result.sort(key=sort_key, reverse=(str(order_type).lower() != "asc"))
 
     return {"data": result}
+
+
+@router.get("/data")
+async def get(id: Optional[int] = None):
+    if id is not None:
+        data_sales = [data for data in DUMMY_DATA["salesReps"] if data["id"] == int(id)]
+        if data_sales:
+            return data_sales[0]
+        raise HTTPException(status_code=404, detail="ID not found")
+    return DUMMY_DATA

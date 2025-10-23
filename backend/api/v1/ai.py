@@ -5,10 +5,10 @@ from env_load import DUMMY_DATA
 from fastapi import APIRouter, Form, HTTPException
 from utils.summary import BuildSummary
 
-router = APIRouter()
+router = APIRouter(prefix="/v1")
 
 
-@router.post("/v1/ai")
+@router.post("/ai")
 async def post(question: str = Form(...)):
     build_summary = BuildSummary(DUMMY_DATA)
     summary = build_summary.summary()

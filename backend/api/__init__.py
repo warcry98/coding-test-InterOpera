@@ -5,8 +5,8 @@ from fastapi import APIRouter
 router = APIRouter()
 
 module_list = [
-    "api.data_v1",
-    "api.ai_v1",
+    "api.v1.data",
+    "api.v1.ai",
 ]
 
 for module_path in module_list:

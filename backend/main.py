@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-origins = ["https://frontend-liard-seven-59.vercel.app"]
+# origins = ["https://frontend-liard-seven-59.vercel.app"]
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
