@@ -12,7 +12,7 @@ from fastapi.responses import JSONResponse
 from utils.summary import BuildSummary
 
 app = FastAPI()
-api_v1 = APIRouter(prefix="/api/v1")
+api_v1 = APIRouter(prefix="/v1")
 
 origins = ["https://frontend-liard-seven-59.vercel.app"]
 # origins = ["*"]
