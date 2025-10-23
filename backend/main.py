@@ -143,6 +143,11 @@ async def post_ai(question: str = Form(...)):
         return {"answer": "You reached limit to access Gemini AI"}
 
 
+@app.get("/health")
+def health():
+    return {"ok": True}
+
+
 app.include_router(api_v1)
 
 if __name__ == "__main__":
