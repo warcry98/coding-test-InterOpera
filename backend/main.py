@@ -143,12 +143,16 @@ async def post_ai(question: str = Form(...)):
         return {"answer": "You reached limit to access Gemini AI"}
 
 
-@app.get("/health")
+api_router = APIRouter(prefix="/api")
+
+
+@api_router.get("/health")
 def health():
     return {"ok": True}
 
 
-app.include_router(api_v1)
+api_router.include_router(api_v1)
+app.include_router(api_router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
